@@ -1,4 +1,5 @@
 import "./TV.css";
+import { bookTicket } from "../services/api";
 
 const TV = () => {
   return (
@@ -4639,6 +4640,7 @@ body {
                 <button
                   className="ant-btn ant-btn-round ant-btn-default button-default active w-28"
                   type="button"
+                  onClick={bookTicket}
                   style={{
                     boxSizing: "border-box",
                     overflow: "visible",
