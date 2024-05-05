@@ -8,10 +8,10 @@ export async function bookTicket(data) {
         "phone": "0971339422"
       },
       "ticket": {
-        "route": "SG-DL",
-        "departureTime": "1",
+        "arrival": "SG",
+        "departure": "DL",
         "quantity": 2,
-        "price": 600000
+        "ArrivalTime": "00:00"
       }
     });
     
@@ -24,6 +24,7 @@ export async function bookTicket(data) {
       },
       data : hardData
     };
+    console.log(hardData);
     try {
         const response = await axios.request(config);
         return JSON.stringify(response.data);
