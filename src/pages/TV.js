@@ -1,11 +1,29 @@
 import "./TV.css";
 import { bookTicket } from "../services/api";
+import { useState } from "react";
 
 const TV = () => {
+  const [inputValue, setInputValue] = useState({
+    name: "",
+    phone: "",
+    email: "",
+    fromStation: "",
+    toStation: "",
+    quantity: 0,
+    departureTime: ""
+  });
+  const handleChange = (event) => {
+    setInputValue((prev) => ({ ...prev, [event.target.name]: event.target.value }));
+  }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    const response = await bookTicket(inputValue);
+    console.log("response", response);
+  };
+
   return (
-    <>
-      <form>
-        <div
+    <form onSubmit={handleSubmit}>
+      <div
         className="Header"
         style={{
           border: "0px solid rgb(229, 231, 235)",
@@ -260,8 +278,6 @@ const TV = () => {
         </div>
       </div>
 
-
-
       <div
         className="Thong tin"
         style={{
@@ -483,11 +499,12 @@ const TV = () => {
                           }}
                         >
                           <input
-                            id="CustName"
+                            id="name"
                             className="ant-input"
                             name="name"
                             type="text"
-                            //defaultValue="Lê Minh Nhân"
+                            value={inputValue.name}
+                            onChange={handleChange}
                             style={{
                               overflow: "visible",
                               fontFamily: "inherit",
@@ -674,11 +691,12 @@ const TV = () => {
                           }}
                         >
                           <input
-                            id="CustMobile"
+                            id="phone"
                             className="ant-input"
-                            name="custtel"
-                            type="text"
-                            //defaultValue="0837690937"
+                            name="phone"
+                            type="tel"
+                            value={inputValue.phone}
+                            onChange={handleChange}
                             style={{
                               overflow: "visible",
                               fontFamily: "inherit",
@@ -766,7 +784,7 @@ const TV = () => {
                   >
                     <label
                       className="ant-form-item-required ant-form-item-required-mark-optional"
-                      htmlFor="CustEmail"
+                      htmlFor="email"
                       style={{
                         border: "0px solid rgb(229, 231, 235)",
                         boxSizing: "border-box",
@@ -865,11 +883,12 @@ const TV = () => {
                           }}
                         >
                           <input
-                            id="CustEmail"
+                            id="email"
                             className="ant-input"
                             name="email"
-                            type="text"
-                            //defaultValue="lenhann10802@gmail.com"
+                            type="email"
+                            value={inputValue.email}
+                            onChange={handleChange}
                             style={{
                               overflow: "visible",
                               fontFamily: "inherit",
@@ -1079,7 +1098,7 @@ const TV = () => {
             </p>
           </div>
         </div>
-      </div>
+      </div >
 
       <div
         className="flex w-full"
@@ -1206,8 +1225,11 @@ const TV = () => {
                 </div>
               </div>
               <select
-                name="input-form flex w-full cursor-pointer items-center justify-between border text-[15px]"
-                id="Diemdi"
+                name="fromStation"
+                id="fromStation"
+                value={inputValue.fromStation}
+                onChange={handleChange}
+                required
                 style={{
                   border: "0px solid rgb(229, 231, 235)",
                   boxSizing: "border-box",
@@ -1225,6 +1247,7 @@ const TV = () => {
                   fontSize: "15px",
                 }}
               >
+                <option value="" selected disabled>Chọn điểm đi</option>
                 <option value="SG">Sài Gòn</option>
                 <option value="CT">Cần Thơ</option>
                 <option value="RG">Rạch Giá</option>
@@ -1279,8 +1302,11 @@ const TV = () => {
               >
               </div>
               <select
-                name="input-form flex w-full cursor-pointer items-center justify-between border text-[15px]"
-                id="DiemDen"
+                name="toStation"
+                id="toStation"
+                onChange={handleChange}
+                value={inputValue.toStation}
+                required
                 style={{
                   border: "0px solid rgb(229, 231, 235)",
                   boxSizing: "border-box",
@@ -1298,6 +1324,7 @@ const TV = () => {
                   fontSize: "15px",
                 }}
               >
+                <option value="" selected disabled>Chọn điểm đến</option>
                 <option value="SG">Sài Gòn</option>
                 <option value="DL">Đà Lạt</option>
                 <option value="PT">Phan Thiết</option>
@@ -1306,7 +1333,6 @@ const TV = () => {
           </div>
         </div>
       </div>
-
 
       <div
         className="flex w-full"
@@ -1372,8 +1398,11 @@ const TV = () => {
             >
               <select
                 type="number"
-                name="input-form flex w-full cursor-pointer items-center justify-between border text-[15px]"
-                id="SoLuong"
+                name="quantity"
+                id="quantity"
+                onChange={handleChange}
+                value={inputValue.quantity}
+                required
                 style={{
                   border: "0px solid rgb(229, 231, 235)",
                   boxSizing: "border-box",
@@ -1391,6 +1420,7 @@ const TV = () => {
                   fontSize: "15px",
                 }}
               >
+                <option value="0" selected disabled>Chọn số lượng vé</option>
                 <option value="1">1</option>
                 <option value="2">2</option>
                 <option value="3">3</option>
@@ -1478,8 +1508,11 @@ const TV = () => {
             >
               <select
                 type="string"
-                name="input-form flex w-full cursor-pointer items-center justify-between border text-[15px]"
-                id="ArrivalTime"
+                name="departureTime"
+                id="departureTime"
+                onChange={handleChange}
+                value={inputValue.departureTime}
+                required
                 style={{
                   border: "0px solid rgb(229, 231, 235)",
                   boxSizing: "border-box",
@@ -1497,6 +1530,7 @@ const TV = () => {
                   fontSize: "15px",
                 }}
               >
+                <option value="" selected disabled>Chọn giờ khởi hành</option>
                 <option value="00:00">00:00</option>
                 <option value="00:30">00:30</option>
                 <option value="01:00">01:00</option>
@@ -1519,8 +1553,6 @@ const TV = () => {
           </div>
         </div>
       </div>
-
-
 
       <div
         className="flex items-center p-6"
@@ -1638,7 +1670,8 @@ const TV = () => {
           </button>
           <button
             className="ant-btn ant-btn-round ant-btn-default button-default active w-28"
-            type="Submit"
+            type="submit"
+            value="Submit"
             style={{
               boxSizing: "border-box",
               overflow: "visible",
@@ -1686,7 +1719,6 @@ const TV = () => {
         </div>
       </div>
 
-      
       <style
         dangerouslySetInnerHTML={{
           __html: `
@@ -1721,9 +1753,8 @@ body {
 }
 `,
         }}
-        />
-      </form>
-    </>
+      />
+    </form >
   );
 };
 
