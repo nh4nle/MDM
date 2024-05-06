@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { convertStringToTimestamp } from './utils';
 
 export async function bookTicket(data) {
   console.log("bookTicket data", data);
@@ -12,7 +13,8 @@ export async function bookTicket(data) {
       "fromStation": data.fromStation,
       "toStation": data.toStation,
       "quantity": data.quantity,
-      "departureTime": data.departureTime
+      "departureTime": convertStringToTimestamp(`${data.departureTime} ${data.departureDate}`),
+      "price": data.price
     }
   });
 

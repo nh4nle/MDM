@@ -1,8 +1,10 @@
 import "./TV.css";
 import { bookTicket } from "../services/api";
 import { useState } from "react";
+import { formatMoney } from "../services/utils";
 
 const TV = () => {
+  const [price, setPrice] = useState(0);
   const [inputValue, setInputValue] = useState({
     name: "",
     phone: "",
@@ -10,14 +12,18 @@ const TV = () => {
     fromStation: "",
     toStation: "",
     quantity: 0,
-    departureTime: ""
+    departureTime: "",
+    departureDate: ""
   });
   const handleChange = (event) => {
+    if (event.target.name === "quantity") {
+      setPrice(event.target.value * 300000);
+    }
     setInputValue((prev) => ({ ...prev, [event.target.name]: event.target.value }));
   }
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const response = await bookTicket(inputValue);
+    const response = await bookTicket({...inputValue, price});
     console.log("response", response);
   };
 
@@ -1508,6 +1514,62 @@ const TV = () => {
             >
               <select
                 type="string"
+                name="departureDate"
+                id="departureDate"
+                onChange={handleChange}
+                value={inputValue.departureDate}
+                required
+                style={{
+                  border: "0px solid rgb(229, 231, 235)",
+                  boxSizing: "border-box",
+                  fontFamily: "InterTight",
+                  borderRadius: "8px",
+                  padding: "9px 16px",
+                  borderColor: "rgb(221, 226, 232)",
+                  height: "36px",
+                  display: "flex",
+                  width: "100%",
+                  cursor: "pointer",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  borderWidth: "1px",
+                  fontSize: "15px",
+                }}
+              >
+                <option value="" selected disabled>Chọn ngày khởi hành</option>
+                <option value="08/05/2024">08/05/2024</option>
+                <option value="09/05/2024">09/05/2024</option>
+                <option value="10/05/2024">10/05/2024</option>
+                <option value="11/05/2024">11/05/2024</option>
+                <option value="12/05/2024">12/05/2024</option>
+                <option value="13/05/2024">13/05/2024</option>
+              </select>
+            </label>
+            <div
+              className="h-full w-[1px] border-r"
+              style={{
+                border: "0px solid rgb(229, 231, 235)",
+                boxSizing: "border-box",
+                fontFamily: "InterTight",
+                height: "100%",
+                width: "1px",
+                borderRightWidth: "1px",
+              }}
+            />
+            <label
+              className="flex flex-1 flex-col gap-4"
+              style={{
+                border: "0px solid rgb(229, 231, 235)",
+                boxSizing: "border-box",
+                fontFamily: "InterTight",
+                display: "flex",
+                flex: "1 1 0%",
+                flexDirection: "column",
+                gap: "1rem",
+              }}
+            >
+              <select
+                type="string"
                 name="departureTime"
                 id="departureTime"
                 onChange={handleChange}
@@ -1605,7 +1667,7 @@ const TV = () => {
               color: "rgb(0 0 0/1)",
             }}
           >
-            0đ
+            {formatMoney(price)} VND
           </span>
         </div>
         <div
