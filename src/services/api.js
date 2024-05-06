@@ -28,8 +28,8 @@ export async function bookTicket(data) {
   };
   try {
     const response = await axios.request(config);
-    return JSON.stringify(response.data);
+    return response.data;
   } catch (err) {
-    throw new Error(err);
+    return {"message" : "fail"}
   }
 }
